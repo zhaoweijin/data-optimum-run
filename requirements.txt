@@ -1,0 +1,4 @@
+MySQL-python
+celery
+selenium
+Flask

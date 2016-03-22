@@ -15,5 +15,5 @@ def add2(x, y):
 
 @app.task
 def arch():
-    archives.gg()
+    archives.firefoxLink1(url,email,password)
     return 1234
