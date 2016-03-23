@@ -3,8 +3,8 @@
 
 import time
 import MySQLdb
-from config.development import DevelopmentConfig
-
+# from config.development import DevelopmentConfig
+from config import load_config
 
 # ltime=time.localtime(1395025933)
 # timeStr=time.strftime("%Y-%m-%d %H:%M:%S", ltime)
