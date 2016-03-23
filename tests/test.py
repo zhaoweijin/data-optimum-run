@@ -3,7 +3,7 @@
 
 import time
 import MySQLdb
-from ..config.development import DevelopmentConfig
+from ...config.development import DevelopmentConfig
 
 
 # ltime=time.localtime(1395025933)
