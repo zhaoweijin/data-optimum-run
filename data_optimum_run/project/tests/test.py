@@ -3,18 +3,9 @@
 
 import time
 import MySQLdb
+from config import load_config
 
-import sys
-import os
-
-# Insert project root path to sys.path
-# project_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-# if project_path not in sys.path:
-#     sys.path.insert(0, project_path)
-
-from config.development import DevelopmentConfig
-# from config import development
-
+config = load_config()
 # ltime=time.localtime(1395025933)
 # timeStr=time.strftime("%Y-%m-%d %H:%M:%S", ltime)
 
@@ -31,4 +22,4 @@ from config.development import DevelopmentConfig
 # print time.time()
 # print time.localtime()
 
-print DevelopmentConfig.DATABASE_HOST
+print config.DATABASE_HOST
