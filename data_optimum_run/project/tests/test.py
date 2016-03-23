@@ -32,4 +32,4 @@ config = load_config()
 # print time.time()
 # print time.localtime()
 
-print config.DATABASE_HOST
+print config
