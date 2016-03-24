@@ -2,3 +2,4 @@ MySQL-python
 celery
 selenium
 Flask
+Flask-SQLAlchemy==2.1
