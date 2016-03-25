@@ -13,5 +13,5 @@ class WpDataoptimumRecord(db.Model):
     times = db.Column(db.Integer)
     state = db.Column(db.SmallInteger)
 
-    def __repr__(self):
-        return '<Record %r>' % self.comments
+    # def __repr__(self):
+    #     return '<Record %r>' % self.comments

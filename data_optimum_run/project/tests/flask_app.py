@@ -25,7 +25,7 @@ class BaseSuite(object):
         # self.client = app.test_client()
         with app.app_context():
             me = WpDataoptimumRecord.query.filter((WpDataoptimumRecord.state==1)).first()
-            print me
+            print me.url,me.times
             # db.drop_all()
             # db.create_all()
 
