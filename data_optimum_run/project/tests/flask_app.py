@@ -13,6 +13,8 @@ if project_path not in sys.path:
 
 from application import create_app
 from application.models import WpDataoptimumRecord
+from application.models import WpDataoptimumPlay
+from application.models import WpDataoptimumPlayContent
 
 # app = create_app()
 
@@ -24,8 +26,9 @@ class BaseSuite(object):
         # self.app = app
         # self.client = app.test_client()
         with app.app_context():
-            me = WpDataoptimumRecord.query.filter((WpDataoptimumRecord.state==1)).first()
-            print me.url,me.times
+            # me = WpDataoptimumRecord.query.filter((WpDataoptimumRecord.state==1)).first()
+            val = WpDataoptimumPlayContent.query.join(WpDataoptimumPlay,WpDataoptimumPlayContent.play_id==WpDataoptimumPlay.id).filter(WpDataoptimumPlayContent.status==0)
+            print val.title,val.post_url
             # db.drop_all()
             # db.create_all()
 

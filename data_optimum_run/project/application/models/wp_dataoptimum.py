@@ -15,3 +15,24 @@ class WpDataoptimumRecord(db.Model):
 
     # def __repr__(self):
     #     return '<Record %r>' % self.comments
+
+class WpDataOptimumPlay(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    post_url = db.Column(db.String(255))
+    title = db.Column(db.String(255))
+    desc = db.Column(db.Text)
+    operate_time = db.Column(db.DateTime)
+    add_time = db.Column(db.DateTime)
+
+class WpDataOptimumPlayContent(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(255))
+    from_user = db.Column(db.String(255))
+    to_user = db.Column(db.String(255))
+    self_symbol = db.Column(db.String(17))
+    object_symbol = db.Column(db.String(17))
+    content = db.Column(db.Text)
+    images = db.Column(db.String(255))
+    play_id = db.Column(db.Integer)
+    carry_time = db.Column(db.DateTime)
+    state = db.Column(db.SmallInteger)

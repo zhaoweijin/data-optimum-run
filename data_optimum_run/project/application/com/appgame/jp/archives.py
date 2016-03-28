@@ -28,7 +28,7 @@ def firefoxLink1(url,email,password):
     # os.environ['MODE'] = 'TESTING'
     app = create_app()
     with app.app_context():
-        me = WpDataoptimumRecord.query.filter((WpDataoptimumRecord.state==1)).first()
+        me = WpDataoptimumRecord.query.filter((WpDataoptimumRecord.state==1)).order_by(User.name).first()
         print me.url,me.times
 
     # try:
