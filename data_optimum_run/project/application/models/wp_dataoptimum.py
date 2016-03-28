@@ -16,7 +16,7 @@ class WpDataoptimumRecord(db.Model):
     # def __repr__(self):
     #     return '<Record %r>' % self.comments
 
-class WpDataOptimumPlay(db.Model):
+class WpDataoptimumPlay(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     post_url = db.Column(db.String(255))
     title = db.Column(db.String(255))
@@ -24,7 +24,7 @@ class WpDataOptimumPlay(db.Model):
     operate_time = db.Column(db.DateTime)
     add_time = db.Column(db.DateTime)
 
-class WpDataOptimumPlayContent(db.Model):
+class WpDataoptimumPlayContent(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255))
     from_user = db.Column(db.String(255))
