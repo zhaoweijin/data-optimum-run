@@ -35,4 +35,4 @@ class WpDataoptimumPlayContent(db.Model):
     images = db.Column(db.String(255))
     play_id = db.Column(db.Integer)
     carry_time = db.Column(db.DateTime)
-    state = db.Column(db.SmallInteger)
+    status = db.Column(db.SmallInteger)
