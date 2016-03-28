@@ -5,4 +5,4 @@ import sys
 sys.path.append("..")
 
 from proj import tasks
-tasks.arch.delay()
+tasks.arch.delay(1,2)
