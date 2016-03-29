@@ -49,7 +49,7 @@ try:
     driver.find_element_by_css_selector("a.sso_login").click()
     time.sleep(5)
     driver.find_element_by_id("email").clear()
-    driver.find_element_by_id("email").send_keys("RosaRita")
+    driver.find_element_by_id("email").send_keys(u"爱吃萝卜皮")
     driver.find_element_by_id("password").clear()
     driver.find_element_by_id("password").send_keys("111111")
     driver.find_element_by_link_text(u"登录").click()
