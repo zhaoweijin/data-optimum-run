@@ -62,7 +62,7 @@ try:
     point.find_element_by_css_selector("a.cmtx_reply_enabled").click()
 
     point.find_element_by_name("cmtx_comment").clear()
-    point.find_element_by_name("cmtx_comment").send_keys("hi6")
+    point.find_element_by_name("cmtx_comment").send_keys("hi7")
     point.find_element_by_link_text(u"评论").click()
     # driver.find_element_by_name("cmtx_comment").clear()
     # driver.find_element_by_name("cmtx_comment").send_keys("hi2")
