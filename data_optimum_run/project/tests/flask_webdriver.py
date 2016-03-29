@@ -51,7 +51,7 @@ try:
     driver.find_element_by_id("email").clear()
     driver.find_element_by_id("email").send_keys("RosaRita")
     driver.find_element_by_id("password").clear()
-    driver.find_element_by_id("password").send_keys("xxx")
+    driver.find_element_by_id("password").send_keys("111111")
     driver.find_element_by_link_text(u"登录").click()
     time.sleep(5)
 
