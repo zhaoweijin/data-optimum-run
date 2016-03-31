@@ -99,6 +99,7 @@ class firefoxLink(object):
 
 
     def go2(self,username):
+        time.sleep(5)
         self.driver.find_element_by_id("email").clear()
         self.driver.find_element_by_id("email").send_keys(username)
         self.driver.find_element_by_id("password").clear()
