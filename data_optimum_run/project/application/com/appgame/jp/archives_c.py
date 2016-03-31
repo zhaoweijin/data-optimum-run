@@ -74,12 +74,7 @@ class firefoxLink(object):
         except TimeoutException:
             self.log_error()
             self.driver.execute_script('window.stop()')
-        except NoSuchElementException:
-            self.log_error()
-        except:
-            self.log_error()
-            self.driver.quit()
-            exit()
+        
         #     print "Unexpected error:", sys.exc_info()[0]
         #     self.driver.quit()
         #     raise
