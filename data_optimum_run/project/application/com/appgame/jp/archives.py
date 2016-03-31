@@ -76,8 +76,6 @@ class firefoxLink(object):
             self.driver.execute_script('window.stop()')
         except NoSuchElementException:
             self.log_error()
-            self.driver.quit()
-            exit()
         except:
             self.log_error()
             self.driver.quit()
