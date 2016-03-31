@@ -106,7 +106,7 @@ class firefoxLink(object):
 
 
     def go2(self,username):
-        time.sleep(5)
+        time.sleep(3)
         self.driver.find_element_by_id("email").clear()
         self.driver.find_element_by_id("email").send_keys(username)
         self.driver.find_element_by_id("password").clear()
@@ -118,6 +118,7 @@ class firefoxLink(object):
 
 
     def go3(self,content,point=''):
+        time.sleep(3)
         if not point:
             self.driver.find_element_by_name("cmtx_comment").clear()
             self.driver.find_element_by_name("cmtx_comment").send_keys(content)
@@ -169,7 +170,7 @@ class firefoxLink(object):
                 with self.app.app_context():
                     WpDataoptimumPlayContent.query.filter(WpDataoptimumPlayContent.id==id).update({WpDataoptimumPlayContent.status : 1})
                     db.session.commit()
-                
+
                 # pickle.dump(driver.get_cookies() , open("QuoraCookies.pkl","wb"))
 
 s = firefoxLink("http://jp.appgame.com/archives/251011.html")
