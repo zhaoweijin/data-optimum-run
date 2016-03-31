@@ -74,7 +74,7 @@ class firefoxLink(object):
         except TimeoutException:
             self.log_error()
             self.driver.execute_script('window.stop()')
-        
+
         #     print "Unexpected error:", sys.exc_info()[0]
         #     self.driver.quit()
         #     raise
@@ -135,32 +135,32 @@ class firefoxLink(object):
                 self(self.go1)
                 self(self.go2,username)
 
-                if 'parent' in self.data_c[val].keys():
-                    reg_path = self.driver.find_elements_by_xpath(".//span[contains(text(),'"+self.data_c[val]['parent']['content']+"')]")
-
-                    for val2 in reg_path:
-                        point = val2.find_element_by_xpath("..")
-                        text = str(point.text)
-
-                        # has from_user?
-                        if not from_user:
-                            searchObj = re.search( r'(.*?)：[\s\S]*', text, re.M|re.I|re.U)
-                            if searchObj and searchObj.group(1).strip()==to_user:
-                                point_last = point
-                                break
-                        else:
-                            searchObj = re.search( r'(.*) 回复 (.*?)：[\s\S]*', text, re.M|re.I|re.U)
-                            if searchObj and searchObj.group(1).strip()==from_user and searchObj.group(2).strip()==to_user:
-                                point_last = point
-                                break
-                    if point_last:
-                        self(self.go3,content,point_last)
-                else:
-                    self(self.go3,content)
-
-                with self.app.app_context():
-                    WpDataoptimumPlayContent.query.filter(WpDataoptimumPlayContent.id==id).update({WpDataoptimumPlayContent.status : 1})
-                    db.session.commit()
+                # if 'parent' in self.data_c[val].keys():
+                #     reg_path = self.driver.find_elements_by_xpath(".//span[contains(text(),'"+self.data_c[val]['parent']['content']+"')]")
+                #
+                #     for val2 in reg_path:
+                #         point = val2.find_element_by_xpath("..")
+                #         text = str(point.text)
+                #
+                #         # has from_user?
+                #         if not from_user:
+                #             searchObj = re.search( r'(.*?)：[\s\S]*', text, re.M|re.I|re.U)
+                #             if searchObj and searchObj.group(1).strip()==to_user:
+                #                 point_last = point
+                #                 break
+                #         else:
+                #             searchObj = re.search( r'(.*) 回复 (.*?)：[\s\S]*', text, re.M|re.I|re.U)
+                #             if searchObj and searchObj.group(1).strip()==from_user and searchObj.group(2).strip()==to_user:
+                #                 point_last = point
+                #                 break
+                #     if point_last:
+                #         self(self.go3,content,point_last)
+                # else:
+                #     self(self.go3,content)
+                #
+                # with self.app.app_context():
+                #     WpDataoptimumPlayContent.query.filter(WpDataoptimumPlayContent.id==id).update({WpDataoptimumPlayContent.status : 1})
+                #     db.session.commit()
                 # pickle.dump(driver.get_cookies() , open("QuoraCookies.pkl","wb"))
 
 s = firefoxLink("http://jp.appgame.com/archives/251011.html")
