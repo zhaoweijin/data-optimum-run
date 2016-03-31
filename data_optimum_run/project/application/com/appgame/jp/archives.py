@@ -76,6 +76,8 @@ class firefoxLink(object):
             self.driver.execute_script('window.stop()')
         except NoSuchElementException:
             self.log_error()
+            self.driver.quit()
+            exit()
         except:
             self.log_error()
             self.driver.quit()
@@ -104,6 +106,7 @@ class firefoxLink(object):
 
 
     def go2(self,username):
+        time.sleep(5)
         self.driver.find_element_by_id("email").clear()
         self.driver.find_element_by_id("email").send_keys(username)
         self.driver.find_element_by_id("password").clear()
@@ -166,6 +169,7 @@ class firefoxLink(object):
                 with self.app.app_context():
                     WpDataoptimumPlayContent.query.filter(WpDataoptimumPlayContent.id==id).update({WpDataoptimumPlayContent.status : 1})
                     db.session.commit()
+                
                 # pickle.dump(driver.get_cookies() , open("QuoraCookies.pkl","wb"))
 
 s = firefoxLink("http://jp.appgame.com/archives/251011.html")
