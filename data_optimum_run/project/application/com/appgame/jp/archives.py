@@ -118,7 +118,6 @@ class firefoxLink(object):
 
 
     def go3(self,content,point=''):
-        time.sleep(3)
         if not point:
             self.driver.find_element_by_name("cmtx_comment").clear()
             self.driver.find_element_by_name("cmtx_comment").send_keys(content)
