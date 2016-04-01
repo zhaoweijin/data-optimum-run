@@ -108,7 +108,7 @@ WpDataoptimumPlayContent.carry_time>="2016-03-28 14:15:01")&(WpDataoptimumPlayCo
 
     def go2(self,username):
         if self.driver.session_id is not None:
-            time.sleep(3)
+            time.sleep(5)
             self.driver.find_element_by_id("email").clear()
             self.driver.find_element_by_id("email").send_keys(username)
             self.driver.find_element_by_id("password").clear()
