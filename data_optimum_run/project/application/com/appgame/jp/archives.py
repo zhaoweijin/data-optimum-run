@@ -46,7 +46,8 @@ class firefoxLink(object):
         app = create_app()
         self.app = app
         with app.app_context():
-            list = WpDataoptimumPlayContent.query.outerjoin(WpDataoptimumPlay,WpDataoptimumPlayContent.play_id==WpDataoptimumPlay.id).filter(WpDataoptimumPlayContent.carry_time>="2016-03-28 14:15:01").with_entities(WpDataoptimumPlayContent.id,'title','username','from_user','to_user','self_symbol','object_symbol','content','play_id','carry_time',WpDataoptimumPlayContent.status).all()
+            list = WpDataoptimumPlayContent.query.outerjoin(WpDataoptimumPlay,WpDataoptimumPlayContent.play_id==WpDataoptimumPlay.id).filter((
+WpDataoptimumPlayContent.carry_time>="2016-03-28 14:15:01")&(WpDataoptimumPlayContent.carry_time<='2016-04-01 14:00:00')).with_entities(WpDataoptimumPlayContent.id,'title','username','from_user','to_user','self_symbol','object_symbol','content','play_id','carry_time',WpDataoptimumPlayContent.status).all()
 
         data = {}
         parent = {}
