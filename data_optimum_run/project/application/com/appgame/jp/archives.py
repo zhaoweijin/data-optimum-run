@@ -178,5 +178,3 @@ WpDataoptimumPlayContent.carry_time>="2016-03-28 14:15:01")&(WpDataoptimumPlayCo
 
                 # pickle.dump(driver.get_cookies() , open("QuoraCookies.pkl","wb"))
 
-s = firefoxLink("http://jp.appgame.com/archives/251011.html")
-s.run()

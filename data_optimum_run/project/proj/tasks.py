@@ -15,5 +15,7 @@ def add2(x, y):
 
 @app.task
 def arch(x, y):
-    archives.firefoxLink1(1,2,3)
+    # archives.firefoxLink1(1,2,3)
+    s = archives.firefoxLink("http://jp.appgame.com/archives/251011.html")
+    s.run()
     return 1234

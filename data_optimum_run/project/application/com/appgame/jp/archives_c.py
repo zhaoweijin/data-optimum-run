@@ -46,7 +46,8 @@ class firefoxLink(object):
         app = create_app()
         self.app = app
         with app.app_context():
-            list = WpDataoptimumPlayContent.query.outerjoin(WpDataoptimumPlay,WpDataoptimumPlayContent.play_id==WpDataoptimumPlay.id).filter(WpDataoptimumPlayContent.id==1).with_entities(WpDataoptimumPlayContent.id,'title','username','from_user','to_user','self_symbol','object_symbol','content','play_id','carry_time',WpDataoptimumPlayContent.status).all()
+            list = WpDataoptimumPlayContent.query.outerjoin(WpDataoptimumPlay,WpDataoptimumPlayContent.play_id==WpDataoptimumPlay.id).filter((
+WpDataoptimumPlayContent.carry_time>="2016-03-28 14:15:01")&(WpDataoptimumPlayContent.carry_time<='2016-04-01 14:00:00')).with_entities(WpDataoptimumPlayContent.id,'title','username','from_user','to_user','self_symbol','object_symbol','content','play_id','carry_time',WpDataoptimumPlayContent.status).all()
 
         data = {}
         parent = {}
@@ -74,7 +75,14 @@ class firefoxLink(object):
         except TimeoutException:
             self.log_error()
             self.driver.execute_script('window.stop()')
-
+        except NoSuchElementException:
+            self.log_error()
+            self.driver.quit()
+            self.driver.session_id = None
+        except:
+            self.log_error()
+            self.driver.quit()
+            exit()
         #     print "Unexpected error:", sys.exc_info()[0]
         #     self.driver.quit()
         #     raise
@@ -99,29 +107,33 @@ class firefoxLink(object):
 
 
     def go2(self,username):
-        time.sleep(5)
-        self.driver.find_element_by_id("email").clear()
-        self.driver.find_element_by_id("email").send_keys(username)
-        self.driver.find_element_by_id("password").clear()
-        self.driver.find_element_by_id("password").send_keys(111111)
-        self.driver.find_element_by_link_text(u"登录").click()
-        time.sleep(5)
-        self.driver.switch_to.frame(self.driver.find_element_by_id("commentics-iframe"))
+        if self.driver.session_id is not None:
+            time.sleep(5)
+            self.driver.find_element_by_id("email").clear()
+            self.driver.find_element_by_id("email").send_keys(username)
+            self.driver.find_element_by_id("password").clear()
+            self.driver.find_element_by_id("password").send_keys(111111)
+            self.driver.find_element_by_link_text(u"登录").click()
+            time.sleep(5)
+            self.driver.switch_to.frame(self.driver.find_element_by_id("commentics-iframe"))
 
 
 
-    def go3(self,content,point=''):
-        if not point:
-            self.driver.find_element_by_name("cmtx_comment").clear()
-            self.driver.find_element_by_name("cmtx_comment").send_keys(content)
-            self.driver.find_element_by_link_text(u"评论").click()
-        else:
-            point.find_element_by_css_selector("a.cmtx_reply_enabled").click()
-            point.find_element_by_name("cmtx_comment").clear()
-            point.find_element_by_name("cmtx_comment").send_keys(content)
-            point.find_element_by_link_text(u"评论").click()
-        time.sleep(3)
-        self.driver.quit()
+    def go3(self,content,id,point=''):
+        if self.driver.session_id is not None:
+            if not point:
+                self.driver.find_element_by_name("cmtx_comment").clear()
+                self.driver.find_element_by_name("cmtx_comment").send_keys(content)
+                self.driver.find_element_by_link_text(u"评论").click()
+            else:
+                point.find_element_by_css_selector("a.cmtx_reply_enabled").click()
+                point.find_element_by_name("cmtx_comment").clear()
+                point.find_element_by_name("cmtx_comment").send_keys(content)
+                point.find_element_by_link_text(u"评论").click()
+            time.sleep(3)
+            with self.app.app_context():
+                WpDataoptimumPlayContent.query.filter(WpDataoptimumPlayContent.id==id).update({WpDataoptimumPlayContent.status : 1})
+                db.session.commit()
 
     def run(self):
         for val in self.data_c:
@@ -136,32 +148,34 @@ class firefoxLink(object):
                 self(self.go1)
                 self(self.go2,username)
 
-                # if 'parent' in self.data_c[val].keys():
-                #     reg_path = self.driver.find_elements_by_xpath(".//span[contains(text(),'"+self.data_c[val]['parent']['content']+"')]")
-                #
-                #     for val2 in reg_path:
-                #         point = val2.find_element_by_xpath("..")
-                #         text = str(point.text)
-                #
-                #         # has from_user?
-                #         if not from_user:
-                #             searchObj = re.search( r'(.*?)：[\s\S]*', text, re.M|re.I|re.U)
-                #             if searchObj and searchObj.group(1).strip()==to_user:
-                #                 point_last = point
-                #                 break
-                #         else:
-                #             searchObj = re.search( r'(.*) 回复 (.*?)：[\s\S]*', text, re.M|re.I|re.U)
-                #             if searchObj and searchObj.group(1).strip()==from_user and searchObj.group(2).strip()==to_user:
-                #                 point_last = point
-                #                 break
-                #     if point_last:
-                #         self(self.go3,content,point_last)
-                # else:
-                #     self(self.go3,content)
-                #
-                # with self.app.app_context():
-                #     WpDataoptimumPlayContent.query.filter(WpDataoptimumPlayContent.id==id).update({WpDataoptimumPlayContent.status : 1})
-                #     db.session.commit()
+                if self.driver.session_id is not None:
+                    if 'parent' in self.data_c[val].keys():
+                        reg_path = self.driver.find_elements_by_xpath(".//span[contains(text(),'"+self.data_c[val]['parent']['content']+"')]")
+
+                        for val2 in reg_path:
+                            point = val2.find_element_by_xpath("..")
+                            text = str(point.text)
+
+                            # has from_user?
+                            if not from_user:
+                                searchObj = re.search( r'(.*?)：[\s\S]*', text, re.M|re.I|re.U)
+                                if searchObj and searchObj.group(1).strip()==to_user:
+                                    point_last = point
+                                    break
+                            else:
+                                searchObj = re.search( r'(.*) 回复 (.*?)：[\s\S]*', text, re.M|re.I|re.U)
+                                if searchObj and searchObj.group(1).strip()==from_user and searchObj.group(2).strip()==to_user:
+                                    point_last = point
+                                    break
+                        if point_last:
+                            self(self.go3,content,id,point_last)
+                    else:
+                        self(self.go3,content,id)
+
+                # makesure after go3 driver is quit
+                if self.driver.session_id is not None:
+                    self.driver.quit()
+
                 # pickle.dump(driver.get_cookies() , open("QuoraCookies.pkl","wb"))
 
 s = firefoxLink("http://jp.appgame.com/archives/251011.html")
