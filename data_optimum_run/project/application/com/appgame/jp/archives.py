@@ -97,7 +97,7 @@ WpDataoptimumPlayContent.carry_time>="2016-03-28 14:15:01")&(WpDataoptimumPlayCo
 
     def go1(self):
         self.driver = webdriver.Remote(command_executor='http://127.0.0.1:4444/wd/hub',desired_capabilities=DesiredCapabilities.FIREFOX)
-        self.driver.set_page_load_timeout(60)
+        self.driver.set_page_load_timeout(30)
         self.driver.get(self.url)
         time.sleep(3)
         self.driver.switch_to.frame(self.driver.find_element_by_id("commentics-iframe"))
