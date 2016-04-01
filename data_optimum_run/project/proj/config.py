@@ -23,17 +23,17 @@ from celery.schedules import crontab
 
 CELERYBEAT_SCHEDULE = {
     # Executes every Monday morning at 7:30 A.M
+    # 'add-every-15-minutes': {
+    #     'task': 'proj.tasks.add',
+    #     'schedule': crontab(minute='*/15'),
+    #     'args': (16, 16),
+    # },
+    # 'add-every-10-minutes': {
+    #     'task': 'proj.tasks.add2',
+    #     'schedule': crontab(minute='*/10'),
+    #     'args': (10, 10),
+    # },
     'add-every-15-minutes': {
-        'task': 'proj.tasks.add',
-        'schedule': crontab(minute='*/15'),
-        'args': (16, 16),
-    },
-    'add-every-10-minutes': {
-        'task': 'proj.tasks.add2',
-        'schedule': crontab(minute='*/10'),
-        'args': (10, 10),
-    },
-    'add-every-1-minutes': {
         'task': 'proj.tasks.arch',
         'schedule': crontab(minute='*/15'),
         'args': (10, 10),
