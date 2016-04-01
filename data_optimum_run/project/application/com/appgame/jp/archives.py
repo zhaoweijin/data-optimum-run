@@ -118,7 +118,7 @@ class firefoxLink(object):
 
 
 
-    def go3(self,content,point=''):
+    def go3(self,content,id,point=''):
         if self.driver.session_id is not None:
             if not point:
                 self.driver.find_element_by_name("cmtx_comment").clear()
@@ -130,7 +130,9 @@ class firefoxLink(object):
                 point.find_element_by_name("cmtx_comment").send_keys(content)
                 point.find_element_by_link_text(u"评论").click()
             time.sleep(3)
-            self.driver.quit()
+            with self.app.app_context():
+                WpDataoptimumPlayContent.query.filter(WpDataoptimumPlayContent.id==id).update({WpDataoptimumPlayContent.status : 1})
+                db.session.commit()
 
     def run(self):
         for val in self.data_c:
@@ -165,13 +167,13 @@ class firefoxLink(object):
                                     point_last = point
                                     break
                         if point_last:
-                            self(self.go3,content,point_last)
+                            self(self.go3,content,id,point_last)
                     else:
-                        self(self.go3,content)
+                        self(self.go3,content,id)
 
-                    with self.app.app_context():
-                        WpDataoptimumPlayContent.query.filter(WpDataoptimumPlayContent.id==id).update({WpDataoptimumPlayContent.status : 1})
-                        db.session.commit()
+                # makesure after go3 driver is quit
+                if self.driver.session_id is not None:
+                    self.driver.quit()
 
                 # pickle.dump(driver.get_cookies() , open("QuoraCookies.pkl","wb"))
 
