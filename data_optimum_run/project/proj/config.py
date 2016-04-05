@@ -5,6 +5,7 @@ from __future__ import absolute_import
 
 CELERY_RESULT_BACKEND = 'amqp'
 BROKER_URL = 'amqp://localhost'
+CELERYD_CONCURRENCY = 1
 
 CELERY_TIMEZONE = 'Asia/Shanghai'
 

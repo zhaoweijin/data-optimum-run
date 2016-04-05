@@ -4,3 +4,4 @@ selenium
 Flask
 Flask-SQLAlchemy==2.1
 supervisor
+flower
