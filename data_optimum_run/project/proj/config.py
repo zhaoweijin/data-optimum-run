@@ -34,9 +34,9 @@ CELERYBEAT_SCHEDULE = {
     #     'schedule': crontab(minute='*/10'),
     #     'args': (10, 10),
     # },
-    'add-every-15-minutes': {
+    'add-every-5-minutes': {
         'task': 'proj.tasks.arch',
-        'schedule': crontab(minute='*/15'),
+        'schedule': crontab(minute='*/5'),
         'args': (10, 10),
     },
 }
