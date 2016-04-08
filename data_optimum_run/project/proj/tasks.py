@@ -16,6 +16,6 @@ from application.com.appgame.jp import archives
 @app.task
 def arch(x, y):
     # archives.firefoxLink1(1,2,3)
-    s = archives.firefoxLink("http://jp.appgame.com/archives/251011.html")
+    s = archives.firefoxLink()
     s.run()
     return 1234

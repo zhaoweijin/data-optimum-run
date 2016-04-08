@@ -39,20 +39,20 @@ class firefoxLink(object):
         driver: object of webdriver.
         url: string of url.
     """
-    def __init__(self,url):
+    def __init__(self):
         """Inits webdriver and data."""
-        self.url = url
+        # self.url = url
 
         app = create_app()
         self.app = app
         with app.app_context():
             list = WpDataoptimumPlayContent.query.outerjoin(WpDataoptimumPlay,WpDataoptimumPlayContent.play_id==WpDataoptimumPlay.id).filter((
-WpDataoptimumPlayContent.carry_time>="2016-03-28 14:15:01")&(WpDataoptimumPlayContent.carry_time<='2016-04-01 14:00:00')).with_entities(WpDataoptimumPlayContent.id,'title','username','from_user','to_user','self_symbol','object_symbol','content','play_id','carry_time',WpDataoptimumPlayContent.status).all()
+WpDataoptimumPlayContent.carry_time>="2016-04-02 13:15:01")&(WpDataoptimumPlayContent.carry_time<='2016-04-11 14:00:00')).with_entities(WpDataoptimumPlayContent.id,'post_url','title','username','from_user','to_user','self_symbol','object_symbol','content','play_id','carry_time',WpDataoptimumPlayContent.status).all()
 
         data = {}
         parent = {}
         for val in list:
-            d = {"id":val.id,"title":val.title,"username":val.username,"from_user":val.from_user,"to_user":val.to_user,"self_symbol":val.self_symbol,"object_symbol":val.object_symbol,"content":val.content,"play_id":val.play_id,"carry_time":val.carry_time,"status":val.status}
+            d = {"id":val.id,"post_url":val.post_url,"title":val.title,"username":val.username,"from_user":val.from_user,"to_user":val.to_user,"self_symbol":val.self_symbol,"object_symbol":val.object_symbol,"content":val.content,"play_id":val.play_id,"carry_time":val.carry_time,"status":val.status}
             data[val.id] = d
 
         for val in data:
@@ -95,10 +95,10 @@ WpDataoptimumPlayContent.carry_time>="2016-03-28 14:15:01")&(WpDataoptimumPlayCo
         f.close()
 
 
-    def go1(self):
+    def go1(self,post_url):
         self.driver = webdriver.Remote(command_executor='http://127.0.0.1:4444/wd/hub',desired_capabilities=DesiredCapabilities.FIREFOX)
         self.driver.set_page_load_timeout(30)
-        self.driver.get(self.url)
+        self.driver.get(post_url)
         time.sleep(3)
         self.driver.switch_to.frame(self.driver.find_element_by_id("commentics-iframe"))
         #To continue with the default content do
@@ -138,6 +138,7 @@ WpDataoptimumPlayContent.carry_time>="2016-03-28 14:15:01")&(WpDataoptimumPlayCo
     def run(self):
         for val in self.data_c:
             id = self.data_c[val]['id']
+            post_url = self.data_c[val]['post_url']
             username = self.data_c[val]['username']
             from_user = str(self.data_c[val]['from_user'])
             to_user = str(self.data_c[val]['to_user'])
@@ -145,7 +146,7 @@ WpDataoptimumPlayContent.carry_time>="2016-03-28 14:15:01")&(WpDataoptimumPlayCo
             status = self.data_c[val]['status']
             point_last = ''
             if status==0:
-                self(self.go1)
+                self(self.go1,post_url)
                 self(self.go2,username)
 
                 if self.driver.session_id is not None:
