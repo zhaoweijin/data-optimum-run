@@ -119,17 +119,22 @@ WpDataoptimumPlayContent.status==0)&(WpDataoptimumPlayContent.carry_time<=dateti
 
 
 
-    def go3(self,content,id,point=''):
+    def go3(self,content,id):
         if self.driver.session_id is not None:
-            if not point:
-                self.driver.find_element_by_name("cmtx_comment").clear()
-                self.driver.find_element_by_name("cmtx_comment").send_keys(content)
-                self.driver.find_element_by_link_text(u"评论").click()
-            else:
-                point.find_element_by_css_selector("a.cmtx_reply_enabled").click()
-                point.find_element_by_name("cmtx_comment").clear()
-                point.find_element_by_name("cmtx_comment").send_keys(content)
-                point.find_element_by_link_text(u"评论").click()
+            self.driver.find_element_by_name("cmtx_comment").clear()
+            self.driver.find_element_by_name("cmtx_comment").send_keys(content)
+            self.driver.find_element_by_link_text(u"评论").click()
+            time.sleep(3)
+            with self.app.app_context():
+                WpDataoptimumPlayContent.query.filter(WpDataoptimumPlayContent.id==id).update({WpDataoptimumPlayContent.status : 1})
+                db.session.commit()
+
+    def go4(self,content,id,point):
+        if self.driver.session_id is not None:
+            point.find_element_by_css_selector("a.cmtx_reply_enabled").click()
+            point.find_element_by_name("cmtx_comment").clear()
+            point.find_element_by_name("cmtx_comment").send_keys(content)
+            point.find_element_by_link_text(u"评论").click()
             time.sleep(3)
             with self.app.app_context():
                 WpDataoptimumPlayContent.query.filter(WpDataoptimumPlayContent.id==id).update({WpDataoptimumPlayContent.status : 1})
@@ -169,7 +174,7 @@ WpDataoptimumPlayContent.status==0)&(WpDataoptimumPlayContent.carry_time<=dateti
                                     point_last = point
                                     break
                         if point_last:
-                            self(self.go3,content,id,point_last)
+                            self(self.go4,content,id,point_last)
                     else:
                         self(self.go3,content,id)
 
