@@ -47,7 +47,7 @@ class firefoxLink(object):
         self.app = app
         with app.app_context():
             list = WpDataoptimumPlayContent.query.outerjoin(WpDataoptimumPlay,WpDataoptimumPlayContent.play_id==WpDataoptimumPlay.id).filter((
-WpDataoptimumPlayContent.play_id==34)).with_entities(WpDataoptimumPlayContent.id,'post_url','title','username','from_user','to_user','self_symbol','object_symbol','content','play_id','carry_time',WpDataoptimumPlayContent.status).all()
+WpDataoptimumPlayContent.play_id==39)).with_entities(WpDataoptimumPlayContent.id,'post_url','title','username','from_user','to_user','self_symbol','object_symbol','content','play_id','carry_time',WpDataoptimumPlayContent.status).all()
 
         data = {}
         parent = {}
@@ -146,14 +146,15 @@ WpDataoptimumPlayContent.play_id==34)).with_entities(WpDataoptimumPlayContent.id
             content = self.data_c[val]['content']
             status = self.data_c[val]['status']
             point_last = ''
-            if status==1:
+            if status==2:
                 self(self.go1,post_url)
                 self(self.go2,username)
 
                 if self.driver.session_id is not None:
                     if 'parent' in self.data_c[val].keys():
+                        print 0
                         reg_path = self.driver.find_elements_by_xpath(".//span[contains(text(),'"+self.data_c[val]['parent']['content']+"')]")
-
+                        print 1
                         for val2 in reg_path:
                             point = val2.find_element_by_xpath("..")
                             text = str(point.text)
@@ -170,8 +171,10 @@ WpDataoptimumPlayContent.play_id==34)).with_entities(WpDataoptimumPlayContent.id
                                     point_last = point
                                     break
                         if point_last:
+                            print 2
                             self(self.go3,content,id,point_last)
                     else:
+                        print 3
                         self(self.go3,content,id)
 
                 # makesure after go3 driver is quit
@@ -180,6 +183,6 @@ WpDataoptimumPlayContent.play_id==34)).with_entities(WpDataoptimumPlayContent.id
 
                 # pickle.dump(driver.get_cookies() , open("QuoraCookies.pkl","wb"))
 
-s = firefoxLink("http://jp.appgame.com/archives/257239.html")
-# s = firefoxLink()
-s.run()
+# s = firefoxLink("http://jp.appgame.com/archives/257239.html")
+# # s = firefoxLink()
+# s.run()
