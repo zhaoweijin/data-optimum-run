@@ -180,6 +180,6 @@ WpDataoptimumPlayContent.play_id==37)).with_entities(WpDataoptimumPlayContent.id
 
                 # pickle.dump(driver.get_cookies() , open("QuoraCookies.pkl","wb"))
 
-s = firefoxLink("http://jp.appgame.com/archives/251011.html")
+s = firefoxLink("http://jp.appgame.com/archives/257239.html")
 # s = firefoxLink()
 s.run()
