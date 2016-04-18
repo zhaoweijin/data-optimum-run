@@ -157,24 +157,24 @@ WpDataoptimumPlayContent.status==0)&(WpDataoptimumPlayContent.carry_time<=dateti
                 if self.driver.session_id is not None:
                     if 'parent' in self.data_c[val].keys():
                         reg_path = self.driver.find_elements_by_xpath(".//span[contains(text(),'"+self.data_c[val]['parent']['content']+"')]")
+                        if len(reg_path)>0:
+                            for val2 in reg_path:
+                                point = val2.find_element_by_xpath("..")
+                                text = str(point.text)
 
-                        for val2 in reg_path:
-                            point = val2.find_element_by_xpath("..")
-                            text = str(point.text)
-
-                            # has from_user?
-                            if not from_user:
-                                searchObj = re.search( r'(.*?)：[\s\S]*', text, re.M|re.I|re.U)
-                                if searchObj and searchObj.group(1).strip()==to_user:
-                                    point_last = point
-                                    break
-                            else:
-                                searchObj = re.search( r'(.*) 回复 (.*?)：[\s\S]*', text, re.M|re.I|re.U)
-                                if searchObj and searchObj.group(1).strip()==from_user and searchObj.group(2).strip()==to_user:
-                                    point_last = point
-                                    break
-                        if point_last:
-                            self(self.go4,content,id,point_last)
+                                # has from_user?
+                                if not from_user:
+                                    searchObj = re.search( r'(.*?)：[\s\S]*', text, re.M|re.I|re.U)
+                                    if searchObj and searchObj.group(1).strip()==to_user:
+                                        point_last = point
+                                        break
+                                else:
+                                    searchObj = re.search( r'(.*) 回复 (.*?)：[\s\S]*', text, re.M|re.I|re.U)
+                                    if searchObj and searchObj.group(1).strip()==from_user and searchObj.group(2).strip()==to_user:
+                                        point_last = point
+                                        break
+                            if point_last:
+                                self(self.go4,content,id,point_last)
                     else:
                         self(self.go3,content,id)
 
