@@ -39,15 +39,15 @@ class firefoxLink(object):
         driver: object of webdriver.
         url: string of url.
     """
-    def __init__(self):
+    def __init__(self,url):
         """Inits webdriver and data."""
-        # self.url = url
+        self.url = url
 
         app = create_app()
         self.app = app
         with app.app_context():
             list = WpDataoptimumPlayContent.query.outerjoin(WpDataoptimumPlay,WpDataoptimumPlayContent.play_id==WpDataoptimumPlay.id).filter((
-WpDataoptimumPlayContent.carry_time>="2016-04-02 13:15:01")&(WpDataoptimumPlayContent.carry_time<='2016-04-11 14:00:00')).with_entities(WpDataoptimumPlayContent.id,'post_url','title','username','from_user','to_user','self_symbol','object_symbol','content','play_id','carry_time',WpDataoptimumPlayContent.status).all()
+WpDataoptimumPlayContent.play_id==37)).with_entities(WpDataoptimumPlayContent.id,'post_url','title','username','from_user','to_user','self_symbol','object_symbol','content','play_id','carry_time',WpDataoptimumPlayContent.status).all()
 
         data = {}
         parent = {}
@@ -98,7 +98,8 @@ WpDataoptimumPlayContent.carry_time>="2016-04-02 13:15:01")&(WpDataoptimumPlayCo
     def go1(self,post_url):
         self.driver = webdriver.Remote(command_executor='http://127.0.0.1:4444/wd/hub',desired_capabilities=DesiredCapabilities.FIREFOX)
         self.driver.set_page_load_timeout(30)
-        self.driver.get(post_url)
+        # self.driver.get(post_url)
+        self.driver.get(self.url)
         time.sleep(3)
         self.driver.switch_to.frame(self.driver.find_element_by_id("commentics-iframe"))
         #To continue with the default content do
@@ -145,7 +146,7 @@ WpDataoptimumPlayContent.carry_time>="2016-04-02 13:15:01")&(WpDataoptimumPlayCo
             content = self.data_c[val]['content']
             status = self.data_c[val]['status']
             point_last = ''
-            if status==0:
+            if status==1:
                 self(self.go1,post_url)
                 self(self.go2,username)
 
@@ -179,7 +180,6 @@ WpDataoptimumPlayContent.carry_time>="2016-04-02 13:15:01")&(WpDataoptimumPlayCo
 
                 # pickle.dump(driver.get_cookies() , open("QuoraCookies.pkl","wb"))
 
-
-
-s = firefoxLink()
+s = firefoxLink("http://jp.appgame.com/archives/251011.html")
+# s = firefoxLink()
 s.run()
