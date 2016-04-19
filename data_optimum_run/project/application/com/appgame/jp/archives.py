@@ -48,8 +48,14 @@ class firefoxLink(object):
         with app.app_context():
 #             list = WpDataoptimumPlayContent.query.outerjoin(WpDataoptimumPlay,WpDataoptimumPlayContent.play_id==WpDataoptimumPlay.id).filter((
 # WpDataoptimumPlayContent.status==0)&(WpDataoptimumPlayContent.carry_time<=datetime.datetime.now())).with_entities(WpDataoptimumPlayContent.id,'post_url','title','username','from_user','to_user','self_symbol','object_symbol','content','play_id','carry_time',WpDataoptimumPlayContent.status).all()
+            list_group = WpDataoptimumPlayContent.query.with_entities(WpDataoptimumPlayContent.play_id).filter((WpDataoptimumPlayContent.status==0)).group_by(WpDataoptimumPlayContent.play_id).all()
+
+            in_group = []
+            for i in list_group:
+                in_group.append(i.play_id)
+
             list = WpDataoptimumPlayContent.query.outerjoin(WpDataoptimumPlay,WpDataoptimumPlayContent.play_id==WpDataoptimumPlay.id).filter((
-WpDataoptimumPlayContent.play_id==37)&(WpDataoptimumPlayContent.carry_time<=datetime.datetime.now())).with_entities(WpDataoptimumPlayContent.id,'post_url','title','username','from_user','to_user','self_symbol','object_symbol','content','play_id','carry_time',WpDataoptimumPlayContent.status).all()
+WpDataoptimumPlayContent.play_id.in_(in_group))&(WpDataoptimumPlayContent.carry_time<=datetime.datetime.now())).with_entities(WpDataoptimumPlayContent.id,'post_url','title','username','from_user','to_user','self_symbol','object_symbol','content','play_id','carry_time',WpDataoptimumPlayContent.status).all()
 
         data = {}
         parent = {}
@@ -121,22 +127,17 @@ WpDataoptimumPlayContent.play_id==37)&(WpDataoptimumPlayContent.carry_time<=date
 
 
 
-    def go3(self,content,id):
+    def go3(self,content,id,point=''):
         if self.driver.session_id is not None:
-            self.driver.find_element_by_name("cmtx_comment").clear()
-            self.driver.find_element_by_name("cmtx_comment").send_keys(content)
-            self.driver.find_element_by_link_text(u"评论").click()
-            time.sleep(3)
-            with self.app.app_context():
-                WpDataoptimumPlayContent.query.filter(WpDataoptimumPlayContent.id==id).update({WpDataoptimumPlayContent.status : 1})
-                db.session.commit()
-
-    def go4(self,content,id,point):
-        if self.driver.session_id is not None:
-            point.find_element_by_css_selector("a.cmtx_reply_enabled").click()
-            point.find_element_by_name("cmtx_comment").clear()
-            point.find_element_by_name("cmtx_comment").send_keys(content)
-            point.find_element_by_link_text(u"评论").click()
+            if not point:
+                self.driver.find_element_by_name("cmtx_comment").clear()
+                self.driver.find_element_by_name("cmtx_comment").send_keys(content)
+                self.driver.find_element_by_link_text(u"评论").click()
+            else:
+                point.find_element_by_css_selector("a.cmtx_reply_enabled").click()
+                point.find_element_by_name("cmtx_comment").clear()
+                point.find_element_by_name("cmtx_comment").send_keys(content)
+                point.find_element_by_link_text(u"评论").click()
             time.sleep(3)
             with self.app.app_context():
                 WpDataoptimumPlayContent.query.filter(WpDataoptimumPlayContent.id==id).update({WpDataoptimumPlayContent.status : 1})
@@ -152,31 +153,31 @@ WpDataoptimumPlayContent.play_id==37)&(WpDataoptimumPlayContent.carry_time<=date
             content = self.data_c[val]['content']
             status = self.data_c[val]['status']
             point_last = ''
-            if status==1:
+            if status==0:
                 self(self.go1,post_url)
                 self(self.go2,username)
 
                 if self.driver.session_id is not None:
                     if 'parent' in self.data_c[val].keys():
                         reg_path = self.driver.find_elements_by_xpath(".//span[contains(text(),'"+self.data_c[val]['parent']['content']+"')]")
-                        if len(reg_path)>0:
-                            for val2 in reg_path:
-                                point = val2.find_element_by_xpath("..")
-                                text = str(point.text)
 
-                                # has from_user?
-                                if not from_user:
-                                    searchObj = re.search( r'(.*?)：[\s\S]*', text, re.M|re.I|re.U)
-                                    if searchObj and searchObj.group(1).strip()==to_user:
-                                        point_last = point
-                                        break
-                                else:
-                                    searchObj = re.search( r'(.*) 回复 (.*?)：[\s\S]*', text, re.M|re.I|re.U)
-                                    if searchObj and searchObj.group(1).strip()==from_user and searchObj.group(2).strip()==to_user:
-                                        point_last = point
-                                        break
-                            if point_last:
-                                self(self.go4,content,id,point_last)
+                        for val2 in reg_path:
+                            point = val2.find_element_by_xpath("..")
+                            text = str(point.text)
+
+                            # has from_user?
+                            if not from_user:
+                                searchObj = re.search( r'(.*?)：[\s\S]*', text, re.M|re.I|re.U)
+                                if searchObj and searchObj.group(1).strip()==to_user:
+                                    point_last = point
+                                    break
+                            else:
+                                searchObj = re.search( r'(.*) 回复 (.*?)：[\s\S]*', text, re.M|re.I|re.U)
+                                if searchObj and searchObj.group(1).strip()==from_user and searchObj.group(2).strip()==to_user:
+                                    point_last = point
+                                    break
+                        if point_last:
+                            self(self.go3,content,id,point_last)
                     else:
                         self(self.go3,content,id)
 
