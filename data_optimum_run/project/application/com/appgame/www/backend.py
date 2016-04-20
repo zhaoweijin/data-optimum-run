@@ -103,8 +103,6 @@ class Backend(object):
                         db.session.add(me)
                         db.session.commit()
 
-                    print 1
-
         if page<page_num:
             page += 1
             self.excute(page)
