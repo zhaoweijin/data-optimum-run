@@ -4,7 +4,7 @@
 from __future__ import absolute_import
 from proj.celery import app
 from application.com.appgame.jp import archives
-# from application.com.appgame.jp import archives_c
+from application.com.appgame.www import backend
 
 # @app.task
 # def add(x, y):
@@ -19,10 +19,10 @@ def arch(x, y):
     # archives.firefoxLink1(1,2,3)
     s = archives.firefoxLink()
     s.run()
-    return 1234
+    return 1
 
-# @app.task
-# def arch2(x, y):
-#     s = archives_c.firefoxLink("http://jp.appgame.com/archives/257239.html")
-#     s.run()
-#     return 11
+@app.task
+def getUrl():
+    s = backend.Backend()
+    s.run()
+    return 2
