@@ -26,6 +26,7 @@ from application.models import WpPosts
 from application.models import WpTermRelationships
 from application.models import WpDataoptimumRecord
 from application.models import WpDataoptimumPlayContentAuto
+from application.models import WpDataoptimumUrls
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -79,29 +80,31 @@ class Backend(object):
 
         for i in content['posts']:
             with self.app.app_context():
-                val = WpDataoptimumPlayContentAuto.query.filter(WpDataoptimumPlayContentAuto.url==i['url']).first()
-                if val is None:
-                    num = randint(2, 5)
-                    #select user
-                    list_user = WpPosts.query.outerjoin(WpTermRelationships,WpPosts.ID==WpTermRelationships.object_id).filter((
-        WpTermRelationships.term_taxonomy_id.in_([152,159,161]))).with_entities(WpPosts.ID,'post_title','post_type',WpTermRelationships.term_taxonomy_id).order_by(func.rand()).limit(num).all()
-                    #select content
-                    list_content = WpDataoptimumRecord.query.filter((WpDataoptimumRecord.category.like('%152%'))|(WpDataoptimumRecord.category.like('%159%'))|(WpDataoptimumRecord.category.like('%161%'))).order_by(func.rand()).limit(num).all()
-                    lists = {}
-                    if len(list_user) == len(list_content):
-                        for index in range(num):
-                            lists[index]={"username":list_user[index].post_title,"content":list_content[index].comments}
+                urls = WpDataoptimumUrls.query.filter(WpDataoptimumUrls.url==i['url']).first()
+                if urls is None:
+                    val = WpDataoptimumPlayContentAuto.query.filter(WpDataoptimumPlayContentAuto.url==i['url']).first()
+                    if val is None:
+                        num = randint(2, 5)
+                        #select user
+                        list_user = WpPosts.query.outerjoin(WpTermRelationships,WpPosts.ID==WpTermRelationships.object_id).filter((
+            WpTermRelationships.term_taxonomy_id.in_([152,159,161]))).with_entities(WpPosts.ID,'post_title','post_type',WpTermRelationships.term_taxonomy_id).order_by(func.rand()).limit(num).all()
+                        #select content
+                        list_content = WpDataoptimumRecord.query.filter((WpDataoptimumRecord.category.like('%152%'))|(WpDataoptimumRecord.category.like('%159%'))|(WpDataoptimumRecord.category.like('%161%'))).order_by(func.rand()).limit(num).all()
+                        lists = {}
+                        if len(list_user) == len(list_content):
+                            for index in range(num):
+                                lists[index]={"username":list_user[index].post_title,"content":list_content[index].comments}
 
-                    #set time
-                    list_time = []
-                    startDate = datetime.datetime.now()
-                    for x in list(self.random_date(startDate,num)):
-                        list_time.append(x.strftime("%Y-%m-%d %H:%M:%S"))
+                        #set time
+                        list_time = []
+                        startDate = datetime.datetime.now()
+                        for x in list(self.random_date(startDate,num)):
+                            list_time.append(x.strftime("%Y-%m-%d %H:%M:%S"))
 
-                    for index2 in lists:
-                        me = WpDataoptimumPlayContentAuto(lists[index2]['username'],lists[index2]['content'],i['url'],list_time[index2])
-                        db.session.add(me)
-                        db.session.commit()
+                        for index2 in lists:
+                            me = WpDataoptimumPlayContentAuto(lists[index2]['username'],lists[index2]['content'],i['url'],list_time[index2])
+                            db.session.add(me)
+                            db.session.commit()
 
         if page<page_num:
             page += 1

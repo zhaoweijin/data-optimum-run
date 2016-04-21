@@ -57,6 +57,11 @@ class WpTermRelationships(db.Model):
     term_taxonomy_id = db.Column(db.BigInteger)
     term_order = db.Column(db.Integer)
 
+class WpDataoptimumUrls(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    url = db.Column(db.String(150))
+    times = db.Column(db.DateTime)
+
 class WpPosts(db.Model):
     ID = db.Column(db.BigInteger, primary_key=True)
     post_title = db.Column(db.Text)
