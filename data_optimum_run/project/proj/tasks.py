@@ -4,7 +4,7 @@
 from __future__ import absolute_import
 from proj.celery import app
 from application.com.appgame.jp import archives
-from application.com.appgame.www import backend
+from application.com.appgame.www import backend_url
 
 # @app.task
 # def add(x, y):
@@ -23,6 +23,6 @@ def arch(x, y):
 
 @app.task
 def getUrl():
-    s = backend.Backend()
+    s = backend_url.Backend()
     s.run()
     return 2

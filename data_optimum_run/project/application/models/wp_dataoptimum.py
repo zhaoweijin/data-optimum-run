@@ -24,6 +24,13 @@ class WpDataoptimumPlay(db.Model):
     operate_time = db.Column(db.DateTime)
     add_time = db.Column(db.DateTime)
 
+    def __init__(self, post_url, title,desc, operate_time,add_time):
+        self.post_url = post_url
+        self.title = title
+        self.desc = desc
+        self.operate_time = operate_time
+        self.add_time = add_time
+
 class WpDataoptimumPlayContent(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255))
