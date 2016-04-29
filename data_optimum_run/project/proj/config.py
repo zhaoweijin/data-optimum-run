@@ -39,8 +39,8 @@ CELERYBEAT_SCHEDULE = {
         'schedule': crontab(minute='*/10'),
         'args': (10, 10),
     },
-    'add-every-60-minutes': {
+    'add-every-30-minutes': {
         'task': 'proj.tasks.getUrl',
-        'schedule': crontab(minute='*/60'),
+        'schedule': crontab(minute='*/30'),
     },
 }
